@@ -23,31 +23,15 @@ import {
   createTheme,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
 import './App.css'
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#1565c0',
-    },
-    secondary: {
-      main: '#ffb300',
-    },
-    background: {
-      default: '#0b1220',
-      paper: '#111a2b',
-    },
-  },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  },
-})
 
 const buildQuestionId = (categoryIndex, questionIndex) =>
   `c${categoryIndex}-q${questionIndex}`
 
 function App() {
+  const [colorMode, setColorMode] = useState('dark')
   const [gameData, setGameData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -59,6 +43,29 @@ function App() {
     { id: 'team-2', name: 'Team 2', score: 0 },
   ])
   const [activeTeamIndex, setActiveTeamIndex] = useState(0)
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: colorMode,
+          primary: {
+            main: '#1565c0',
+          },
+          secondary: {
+            main: '#ffb300',
+          },
+          background: {
+            default: colorMode === 'dark' ? '#0b1220' : '#f3f6fb',
+            paper: colorMode === 'dark' ? '#111a2b' : '#ffffff',
+          },
+        },
+        typography: {
+          fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        },
+      }),
+    [colorMode],
+  )
 
   useEffect(() => {
     let active = true
@@ -129,6 +136,10 @@ function App() {
     setActiveTeamIndex(0)
   }
 
+  const handleToggleTheme = () => {
+    setColorMode((prev) => (prev === 'dark' ? 'light' : 'dark'))
+  }
+
   const handleSwitchTeam = () => {
     setActiveTeamIndex((prev) => (prev + 1) % teams.length)
   }
@@ -168,7 +179,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box className="app-shell">
+      <Box className="app-shell" data-theme={colorMode}>
         <AppBar position="static" color="primary" elevation={0}>
           <Toolbar sx={{ gap: 2, flexWrap: 'wrap' }}>
             <Stack spacing={0.25}>
@@ -197,6 +208,13 @@ function App() {
                   />
                 ))}
               </Stack>
+              <IconButton color="inherit" onClick={handleToggleTheme}>
+                {colorMode === 'dark' ? (
+                  <Brightness7Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
+              </IconButton>
               <Button color="inherit" variant="outlined" onClick={handleReset}>
                 Reset Board
               </Button>
