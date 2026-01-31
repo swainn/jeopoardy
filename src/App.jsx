@@ -19,6 +19,7 @@ import {
   Paper,
   Select,
   Stack,
+  TextField,
   ThemeProvider,
   Toolbar,
   Typography,
@@ -44,6 +45,8 @@ function App() {
   const [activeTeamIndex, setActiveTeamIndex] = useState(0)
   const [teamCount, setTeamCount] = useState(2)
   const [showTeamSetup, setShowTeamSetup] = useState(true)
+  const [wagersByQuestion, setWagersByQuestion] = useState({})
+  const [showFinalIntro, setShowFinalIntro] = useState(false)
 
   const theme = useMemo(
     () =>
@@ -99,6 +102,35 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (!event.ctrlKey || !event.shiftKey) return
+      if (event.key.toLowerCase() !== 'j') return
+      if (!gameData?.categories?.length) return
+
+      const questionIds = []
+      gameData.categories.forEach((category, categoryIndex) => {
+        category.questions.forEach((_, questionIndex) => {
+          questionIds.push(buildQuestionId(categoryIndex, questionIndex))
+        })
+      })
+
+      if (questionIds.length === 0) return
+      const remainingId = questionIds[questionIds.length - 1]
+      const nextAnswered = questionIds.reduce((acc, id) => {
+        if (id !== remainingId) acc[id] = true
+        return acc
+      }, {})
+
+      setAnsweredMap(nextAnswered)
+      setSelected(null)
+      setRevealAnswer(false)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [gameData])
+
   const maxQuestions = useMemo(() => {
     if (!gameData?.categories?.length) return 0
     return Math.max(
@@ -106,10 +138,39 @@ function App() {
     )
   }, [gameData])
 
+  const totalQuestions = useMemo(() => {
+    if (!gameData?.categories?.length) return 0
+    return gameData.categories.reduce(
+      (sum, category) => sum + category.questions.length,
+      0,
+    )
+  }, [gameData])
+
   const handleOpenQuestion = (payload) => {
     setSelected(payload)
     setRevealAnswer(false)
   }
+
+  useEffect(() => {
+    if (!gameData?.finalJeopardy) return
+    if (showTeamSetup) return
+    if (selected) return
+    if (showFinalIntro) return
+    if (answeredMap.final) return
+    const answeredCount = Object.keys(answeredMap).filter(
+      (key) => key !== 'final',
+    ).length
+    if (totalQuestions > 0 && answeredCount >= totalQuestions) {
+      setShowFinalIntro(true)
+    }
+  }, [
+    answeredMap,
+    gameData,
+    selected,
+    showFinalIntro,
+    showTeamSetup,
+    totalQuestions,
+  ])
 
   const handleCloseDialog = () => {
     setSelected(null)
@@ -130,8 +191,10 @@ function App() {
     setAnsweredMap({})
     setSelected(null)
     setRevealAnswer(false)
+    setWagersByQuestion({})
     setActiveTeamIndex(0)
     setShowTeamSetup(true)
+    setShowFinalIntro(false)
   }
 
   const handleCreateTeams = () => {
@@ -143,6 +206,17 @@ function App() {
     setTeams(nextTeams)
     setActiveTeamIndex(0)
     setShowTeamSetup(false)
+  }
+
+  const handleOpenFinalJeopardy = () => {
+    if (!gameData?.finalJeopardy) return
+    setShowFinalIntro(false)
+    handleOpenQuestion({
+      id: 'final',
+      question: gameData.finalJeopardy,
+      category: { name: gameData.finalJeopardy.category },
+      isFinal: true,
+    })
   }
 
   const handleToggleTheme = () => {
@@ -157,6 +231,16 @@ function App() {
     setTeams((prev) =>
       prev.map((team, index) =>
         index === activeTeamIndex
+          ? { ...team, score: Math.max(0, team.score + delta) }
+          : team,
+      ),
+    )
+  }
+
+  const applyScoreDeltaForTeam = (teamId, delta) => {
+    setTeams((prev) =>
+      prev.map((team) =>
+        team.id === teamId
           ? { ...team, score: Math.max(0, team.score + delta) }
           : team,
       ),
@@ -184,6 +268,13 @@ function App() {
   const selectedCategory = selected?.category
   const activeTeam = teams[activeTeamIndex]
   const canScore = Boolean(selectedQuestion?.value)
+  const isDailyDouble = Boolean(selectedQuestion?.dailyDouble)
+  const isFinalJeopardy = Boolean(selected?.isFinal)
+  const selectedQuestionId = selected?.id
+  const wagersForQuestion =
+    (selectedQuestionId && wagersByQuestion[selectedQuestionId]) || {}
+  const getWagerForTeam = (teamId) =>
+    Math.max(0, Number(wagersForQuestion?.[teamId] || 0))
 
   return (
     <ThemeProvider theme={theme}>
@@ -305,39 +396,6 @@ function App() {
                 </Box>
               </Paper>
 
-              {gameData.finalJeopardy && (
-                <Paper className="final" elevation={3}>
-                  <Stack
-                    direction={{ xs: 'column', md: 'row' }}
-                    spacing={2}
-                    alignItems={{ xs: 'flex-start', md: 'center' }}
-                  >
-                    <Box>
-                      <Typography variant="overline" color="secondary">
-                        Final Jeopardy
-                      </Typography>
-                      <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                        {gameData.finalJeopardy.category}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ flexGrow: 1 }} />
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() =>
-                        handleOpenQuestion({
-                          id: 'final',
-                          question: gameData.finalJeopardy,
-                          category: { name: gameData.finalJeopardy.category },
-                          isFinal: true,
-                        })
-                      }
-                    >
-                      Open Final Jeopardy
-                    </Button>
-                  </Stack>
-                </Paper>
-              )}
             </Stack>
           )}
         </Box>
@@ -373,6 +431,70 @@ function App() {
             <Typography variant="h4" sx={{ fontWeight: 600 }}>
               {selectedQuestion?.clue}
             </Typography>
+            {!revealAnswer && isFinalJeopardy && teams.length > 0 && (
+              <Box>
+                <Typography variant="subtitle2" sx={{ marginBottom: 1 }}>
+                  Final Jeopardy Wagers
+                </Typography>
+                <Stack spacing={1}>
+                  {teams.map((team) => (
+                    <TextField
+                      key={team.id}
+                      label={`${team.name} Wager`}
+                      type="number"
+                      size="small"
+                      inputProps={{ min: 0 }}
+                      value={wagersForQuestion[team.id] ?? ''}
+                      onChange={(event) => {
+                        const rawValue = Number(event.target.value)
+                        const nextValue = Number.isNaN(rawValue)
+                          ? 0
+                          : Math.max(0, rawValue)
+                        setWagersByQuestion((prev) => ({
+                          ...prev,
+                          [selectedQuestionId]: {
+                            ...(prev[selectedQuestionId] || {}),
+                            [team.id]: nextValue,
+                          },
+                        }))
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </Box>
+            )}
+            {isDailyDouble && teams.length > 0 && (
+              <Box>
+                <Typography variant="subtitle2" sx={{ marginBottom: 1 }}>
+                  Wagers
+                </Typography>
+                <Stack spacing={1}>
+                  {teams.map((team) => (
+                    <TextField
+                      key={team.id}
+                      label={`${team.name} Bet`}
+                      type="number"
+                      size="small"
+                      inputProps={{ min: 0 }}
+                      value={wagersForQuestion[team.id] ?? ''}
+                      onChange={(event) => {
+                        const rawValue = Number(event.target.value)
+                        const nextValue = Number.isNaN(rawValue)
+                          ? 0
+                          : Math.max(0, rawValue)
+                        setWagersByQuestion((prev) => ({
+                          ...prev,
+                          [selectedQuestionId]: {
+                            ...(prev[selectedQuestionId] || {}),
+                            [team.id]: nextValue,
+                          },
+                        }))
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </Box>
+            )}
             <Divider />
             {revealAnswer ? (
               <Typography variant="h4" color="secondary" sx={{ fontWeight: 700 }}>
@@ -408,6 +530,32 @@ function App() {
             <Button onClick={() => setRevealAnswer(true)}>
               Reveal Answer
             </Button>
+          ) : isFinalJeopardy ? (
+            <Stack direction="column" spacing={1}>
+              {teams.map((team) => (
+                <Stack key={team.id} direction="row" spacing={1}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() =>
+                      applyScoreDeltaForTeam(team.id, getWagerForTeam(team.id))
+                    }
+                  >
+                    {team.name} Correct (+${getWagerForTeam(team.id)})
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      applyScoreDeltaForTeam(team.id, -getWagerForTeam(team.id))
+                    }
+                  >
+                    {team.name} Incorrect (-${getWagerForTeam(team.id)})
+                  </Button>
+                </Stack>
+              ))}
+              <Button variant="contained" onClick={handleMarkAnswered}>
+                Finish Final
+              </Button>
+            </Stack>
           ) : (
             <>
               <Button
@@ -452,6 +600,29 @@ function App() {
         <DialogActions>
           <Button variant="contained" onClick={handleCreateTeams}>
             Start Game
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={showFinalIntro} maxWidth="sm" fullWidth>
+        <DialogTitle>
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              🎉 Final Jeopardy 🎉
+            </Typography>
+          </Box>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={2} alignItems="center" textAlign="center">
+            <Typography variant="h3">🎊✨🎊</Typography>
+            <Typography variant="body1">
+              Get ready for the final clue!
+            </Typography>
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center' }}>
+          <Button variant="contained" onClick={handleOpenFinalJeopardy}>
+            Open Final Jeopardy
           </Button>
         </DialogActions>
       </Dialog>
