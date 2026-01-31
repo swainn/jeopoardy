@@ -49,6 +49,10 @@ function App() {
   const [showFinalIntro, setShowFinalIntro] = useState(false)
   const [finalResultsByTeam, setFinalResultsByTeam] = useState({})
   const [showFinalStandings, setShowFinalStandings] = useState(false)
+  const [dailyDoubleMap, setDailyDoubleMap] = useState({})
+  const [showDailyDoubleIntro, setShowDailyDoubleIntro] = useState(false)
+  const [pendingDailyDouble, setPendingDailyDouble] = useState(null)
+  const [showDailyDoubleMarkers, setShowDailyDoubleMarkers] = useState(false)
 
   const theme = useMemo(
     () =>
@@ -107,8 +111,14 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (!event.ctrlKey || !event.shiftKey) return
-      if (event.key.toLowerCase() !== 'j') return
+      const key = event.key.toLowerCase()
+      if (key !== 'j' && key !== 'd') return
       if (!gameData?.categories?.length) return
+
+      if (key === 'd') {
+        setShowDailyDoubleMarkers((prev) => !prev)
+        return
+      }
 
       const questionIds = []
       gameData.categories.forEach((category, categoryIndex) => {
@@ -151,6 +161,26 @@ function App() {
   const handleOpenQuestion = (payload) => {
     setSelected(payload)
     setRevealAnswer(false)
+  }
+
+  const isDailyDoubleQuestion = (categoryIndex, questionIndex) =>
+    Boolean(dailyDoubleMap[buildQuestionId(categoryIndex, questionIndex)])
+
+  const handleSelectQuestion = (payload) => {
+    if (payload?.isFinal) {
+      handleOpenQuestion(payload)
+      return
+    }
+    if (payload?.categoryIndex == null || payload?.questionIndex == null) {
+      handleOpenQuestion(payload)
+      return
+    }
+    if (isDailyDoubleQuestion(payload.categoryIndex, payload.questionIndex)) {
+      setPendingDailyDouble(payload)
+      setShowDailyDoubleIntro(true)
+      return
+    }
+    handleOpenQuestion(payload)
   }
 
   useEffect(() => {
@@ -207,6 +237,9 @@ function App() {
     setShowFinalIntro(false)
     setFinalResultsByTeam({})
     setShowFinalStandings(false)
+    setDailyDoubleMap({})
+    setShowDailyDoubleIntro(false)
+    setPendingDailyDouble(null)
   }
 
   const handleCreateTeams = () => {
@@ -218,6 +251,17 @@ function App() {
     setTeams(nextTeams)
     setActiveTeamIndex(0)
     setShowTeamSetup(false)
+    if (gameData?.categories?.length) {
+      const nextDailyDoubleMap = {}
+      gameData.categories.forEach((category, categoryIndex) => {
+        if (!category.questions.length) return
+        const randomIndex = Math.floor(
+          Math.random() * category.questions.length,
+        )
+        nextDailyDoubleMap[buildQuestionId(categoryIndex, randomIndex)] = true
+      })
+      setDailyDoubleMap(nextDailyDoubleMap)
+    }
   }
 
   const handleOpenFinalJeopardy = () => {
@@ -225,12 +269,19 @@ function App() {
     setShowFinalIntro(false)
     setFinalResultsByTeam({})
     setShowFinalStandings(false)
-    handleOpenQuestion({
+    handleSelectQuestion({
       id: 'final',
       question: gameData.finalJeopardy,
       category: { name: gameData.finalJeopardy.category },
       isFinal: true,
     })
+  }
+
+  const handleOpenDailyDoubleQuestion = () => {
+    if (!pendingDailyDouble) return
+    setShowDailyDoubleIntro(false)
+    handleOpenQuestion(pendingDailyDouble)
+    setPendingDailyDouble(null)
   }
 
   const handleToggleTheme = () => {
@@ -263,13 +314,13 @@ function App() {
 
   const handleScoreCorrect = () => {
     if (!selectedQuestion?.value) return
-    applyScoreDelta(selectedQuestion.value)
+    applyScoreDelta(scoreValue)
     handleMarkAnswered()
   }
 
   const handleScoreIncorrect = () => {
     if (!selectedQuestion?.value) return
-    applyScoreDelta(-selectedQuestion.value)
+    applyScoreDelta(-scoreValue)
     handleSwitchTeam()
     handleMarkAnswered()
   }
@@ -282,14 +333,19 @@ function App() {
   const selectedCategory = selected?.category
   const activeTeam = teams[activeTeamIndex]
   const canScore = Boolean(selectedQuestion?.value)
-  const isDailyDouble = Boolean(selectedQuestion?.dailyDouble)
-  const isFinalJeopardy = Boolean(selected?.isFinal)
   const selectedQuestionId = selected?.id
+  const isDailyDouble = Boolean(
+    selectedQuestionId && dailyDoubleMap[selectedQuestionId],
+  )
+  const isFinalJeopardy = Boolean(selected?.isFinal)
   const wagersForQuestion =
     (selectedQuestionId && wagersByQuestion[selectedQuestionId]) || {}
   const getWagerForTeam = (teamId) =>
     Math.max(0, Number(wagersForQuestion?.[teamId] || 0))
   const finalResultForTeam = (teamId) => finalResultsByTeam[teamId]
+  const scoreValue = isDailyDouble
+    ? (selectedQuestion?.value || 0) * 2
+    : selectedQuestion?.value || 0
   const setFinalResultForTeam = (teamId, result) => {
     setFinalResultsByTeam((prev) => ({
       ...prev,
@@ -396,13 +452,17 @@ function App() {
 
                       const id = buildQuestionId(categoryIndex, rowIndex)
                       const answered = Boolean(answeredMap[id])
+                      const isDailyDoubleCell = isDailyDoubleQuestion(
+                        categoryIndex,
+                        rowIndex,
+                      )
                       return (
                         <ButtonBase
                           key={id}
                           className={`cell ${answered ? 'answered' : ''}`}
                           disabled={answered}
                           onClick={() =>
-                            handleOpenQuestion({
+                            handleSelectQuestion({
                               id,
                               question,
                               category,
@@ -412,7 +472,13 @@ function App() {
                           }
                         >
                           <Typography variant="h6" className="cell-value">
-                            {answered ? 'Answered' : `$${question.value}`}
+                            {answered
+                              ? 'Answered'
+                              : `$${question.value}$${
+                                  showDailyDoubleMarkers && isDailyDoubleCell
+                                    ? ' •'
+                                    : ''
+                                }`}
                           </Typography>
                         </ButtonBase>
                       )
@@ -439,7 +505,7 @@ function App() {
             </Typography>
             {selectedQuestion?.value && (
               <Chip
-                label={`$${selectedQuestion.value}`}
+                label={`$${scoreValue}`}
                 color="secondary"
                 sx={{ marginLeft: 2 }}
               />
@@ -466,38 +532,6 @@ function App() {
                     <TextField
                       key={team.id}
                       label={`${team.name} Wager`}
-                      type="number"
-                      size="small"
-                      inputProps={{ min: 0 }}
-                      value={wagersForQuestion[team.id] ?? ''}
-                      onChange={(event) => {
-                        const rawValue = Number(event.target.value)
-                        const nextValue = Number.isNaN(rawValue)
-                          ? 0
-                          : Math.max(0, rawValue)
-                        setWagersByQuestion((prev) => ({
-                          ...prev,
-                          [selectedQuestionId]: {
-                            ...(prev[selectedQuestionId] || {}),
-                            [team.id]: nextValue,
-                          },
-                        }))
-                      }}
-                    />
-                  ))}
-                </Stack>
-              </Box>
-            )}
-            {isDailyDouble && teams.length > 0 && (
-              <Box>
-                <Typography variant="subtitle2" sx={{ marginBottom: 1 }}>
-                  Wagers
-                </Typography>
-                <Stack spacing={1}>
-                  {teams.map((team) => (
-                    <TextField
-                      key={team.id}
-                      label={`${team.name} Bet`}
                       type="number"
                       size="small"
                       inputProps={{ min: 0 }}
@@ -612,10 +646,10 @@ function App() {
                 color="secondary"
                 disabled={!canScore}
               >
-                Correct (+${selectedQuestion?.value || 0})
+                Correct (+${scoreValue})
               </Button>
               <Button onClick={handleScoreIncorrect} disabled={!canScore}>
-                Incorrect (-${selectedQuestion?.value || 0})
+                Incorrect (-${scoreValue})
               </Button>
               <Button onClick={handleNoCorrectResponse} disabled={!canScore}>
                 No Correct Response
@@ -671,6 +705,37 @@ function App() {
         <DialogActions sx={{ justifyContent: 'center' }}>
           <Button variant="contained" onClick={handleOpenFinalJeopardy}>
             Open Final Jeopardy
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={showDailyDoubleIntro}
+        maxWidth="sm"
+        fullWidth
+        onClose={() => {
+          setShowDailyDoubleIntro(false)
+          setPendingDailyDouble(null)
+        }}
+      >
+        <DialogTitle>
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              🎯 Daily Double 🎯
+            </Typography>
+          </Box>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={2} alignItems="center" textAlign="center">
+            <Typography variant="h3">✨💥✨</Typography>
+            <Typography variant="body1">
+              The next clue is worth double!
+            </Typography>
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center' }}>
+          <Button variant="contained" onClick={handleOpenDailyDoubleQuestion}>
+            Open Daily Double
           </Button>
         </DialogActions>
       </Dialog>
