@@ -52,6 +52,11 @@ function App() {
   const [selected, setSelected] = useState(null)
   const [revealAnswer, setRevealAnswer] = useState(false)
   const [answeredMap, setAnsweredMap] = useState({})
+  const [teams, setTeams] = useState([
+    { id: 'team-1', name: 'Team 1', score: 0 },
+    { id: 'team-2', name: 'Team 2', score: 0 },
+  ])
+  const [activeTeamIndex, setActiveTeamIndex] = useState(0)
 
   useEffect(() => {
     let active = true
@@ -115,21 +120,81 @@ function App() {
     setAnsweredMap({})
     setSelected(null)
     setRevealAnswer(false)
+    setTeams([
+      { id: 'team-1', name: 'Team 1', score: 0 },
+      { id: 'team-2', name: 'Team 2', score: 0 },
+    ])
+    setActiveTeamIndex(0)
+  }
+
+  const handleSwitchTeam = () => {
+    setActiveTeamIndex((prev) => (prev + 1) % teams.length)
+  }
+
+  const applyScoreDelta = (delta) => {
+    setTeams((prev) =>
+      prev.map((team, index) =>
+        index === activeTeamIndex
+          ? { ...team, score: team.score + delta }
+          : team,
+      ),
+    )
+  }
+
+  const handleScoreCorrect = () => {
+    if (!selectedQuestion?.value) return
+    applyScoreDelta(selectedQuestion.value)
+    handleMarkAnswered()
+  }
+
+  const handleScoreIncorrect = () => {
+    if (!selectedQuestion?.value) return
+    applyScoreDelta(-selectedQuestion.value)
+    handleSwitchTeam()
+    handleMarkAnswered()
+  }
+
+  const handleNoCorrectResponse = () => {
+    handleMarkAnswered()
   }
 
   const selectedQuestion = selected?.question
   const selectedCategory = selected?.category
+  const activeTeam = teams[activeTeamIndex]
+  const canScore = Boolean(selectedQuestion?.value)
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box className="app-shell">
         <AppBar position="static" color="primary" elevation={0}>
-          <Toolbar>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              {gameData?.title || 'Jeopardy'}
-            </Typography>
-            <Stack direction="row" spacing={1} sx={{ marginLeft: 'auto' }}>
+          <Toolbar sx={{ gap: 2, flexWrap: 'wrap' }}>
+            <Stack spacing={0.25}>
+              <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                {gameData?.title || 'Jeopardy'}
+              </Typography>
+              {gameData?.subtitle && (
+                <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                  {gameData.subtitle}
+                </Typography>
+              )}
+            </Stack>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              sx={{ marginLeft: 'auto', alignItems: 'center' }}
+            >
+              <Stack direction="row" spacing={1}>
+                {teams.map((team, index) => (
+                  <Chip
+                    key={team.id}
+                    label={`${team.name}: $${team.score}`}
+                    color={index === activeTeamIndex ? 'secondary' : 'default'}
+                    variant={index === activeTeamIndex ? 'filled' : 'outlined'}
+                    onClick={() => setActiveTeamIndex(index)}
+                  />
+                ))}
+              </Stack>
               <Button color="inherit" variant="outlined" onClick={handleReset}>
                 Reset Board
               </Button>
@@ -260,6 +325,19 @@ function App() {
         </DialogTitle>
         <DialogContent dividers>
           <Stack spacing={2}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              alignItems={{ xs: 'flex-start', sm: 'center' }}
+            >
+              <Typography variant="body2" color="text.secondary">
+                Active Team:
+              </Typography>
+              <Chip label={activeTeam?.name} color="secondary" />
+              <Button size="small" onClick={handleSwitchTeam}>
+                Switch Team
+              </Button>
+            </Stack>
             <Typography variant="body1">{selectedQuestion?.clue}</Typography>
             <Divider />
             {revealAnswer ? (
@@ -292,6 +370,20 @@ function App() {
           </Stack>
         </DialogContent>
         <DialogActions>
+          <Button
+            onClick={handleScoreCorrect}
+            variant="contained"
+            color="secondary"
+            disabled={!canScore}
+          >
+            Correct (+${selectedQuestion?.value || 0})
+          </Button>
+          <Button onClick={handleScoreIncorrect} disabled={!canScore}>
+            Incorrect / No Answer (-${selectedQuestion?.value || 0})
+          </Button>
+          <Button onClick={handleNoCorrectResponse} disabled={!canScore}>
+            No Correct Response
+          </Button>
           <Button onClick={() => setRevealAnswer((prev) => !prev)}>
             {revealAnswer ? 'Hide Answer' : 'Reveal Answer'}
           </Button>
