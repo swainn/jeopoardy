@@ -47,6 +47,8 @@ function App() {
   const [showTeamSetup, setShowTeamSetup] = useState(true)
   const [wagersByQuestion, setWagersByQuestion] = useState({})
   const [showFinalIntro, setShowFinalIntro] = useState(false)
+  const [finalResultsByTeam, setFinalResultsByTeam] = useState({})
+  const [showFinalStandings, setShowFinalStandings] = useState(false)
 
   const theme = useMemo(
     () =>
@@ -177,6 +179,10 @@ function App() {
     setRevealAnswer(false)
   }
 
+  const handleCloseFinalStandings = () => {
+    setShowFinalStandings(false)
+  }
+
   const handleMarkAnswered = () => {
     if (!selected) return
     const id = selected.id
@@ -184,6 +190,10 @@ function App() {
       ...prev,
       [id]: true,
     }))
+    if (id === 'final') {
+      setFinalResultsByTeam({})
+      setShowFinalStandings(true)
+    }
     handleCloseDialog()
   }
 
@@ -195,6 +205,8 @@ function App() {
     setActiveTeamIndex(0)
     setShowTeamSetup(true)
     setShowFinalIntro(false)
+    setFinalResultsByTeam({})
+    setShowFinalStandings(false)
   }
 
   const handleCreateTeams = () => {
@@ -211,6 +223,8 @@ function App() {
   const handleOpenFinalJeopardy = () => {
     if (!gameData?.finalJeopardy) return
     setShowFinalIntro(false)
+    setFinalResultsByTeam({})
+    setShowFinalStandings(false)
     handleOpenQuestion({
       id: 'final',
       question: gameData.finalJeopardy,
@@ -275,6 +289,17 @@ function App() {
     (selectedQuestionId && wagersByQuestion[selectedQuestionId]) || {}
   const getWagerForTeam = (teamId) =>
     Math.max(0, Number(wagersForQuestion?.[teamId] || 0))
+  const finalResultForTeam = (teamId) => finalResultsByTeam[teamId]
+  const setFinalResultForTeam = (teamId, result) => {
+    setFinalResultsByTeam((prev) => ({
+      ...prev,
+      [teamId]: result,
+    }))
+  }
+  const finalStandings = useMemo(() => {
+    if (!teams.length) return []
+    return [...teams].sort((a, b) => b.score - a.score)
+  }, [teams])
 
   return (
     <ThemeProvider theme={theme}>
@@ -318,7 +343,7 @@ function App() {
                 )}
               </IconButton>
               <Button color="inherit" variant="outlined" onClick={handleReset}>
-                Reset Board
+                New Game
               </Button>
             </Stack>
           </Toolbar>
@@ -532,26 +557,49 @@ function App() {
             </Button>
           ) : isFinalJeopardy ? (
             <Stack direction="column" spacing={1}>
-              {teams.map((team) => (
-                <Stack key={team.id} direction="row" spacing={1}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() =>
-                      applyScoreDeltaForTeam(team.id, getWagerForTeam(team.id))
-                    }
-                  >
-                    {team.name} Correct (+${getWagerForTeam(team.id)})
-                  </Button>
-                  <Button
-                    onClick={() =>
-                      applyScoreDeltaForTeam(team.id, -getWagerForTeam(team.id))
-                    }
-                  >
-                    {team.name} Incorrect (-${getWagerForTeam(team.id)})
-                  </Button>
-                </Stack>
-              ))}
+              {teams.map((team) => {
+                const result = finalResultForTeam(team.id)
+                return (
+                  <Stack key={team.id} direction="row" spacing={1}>
+                    {!result ? (
+                      <>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => {
+                            applyScoreDeltaForTeam(
+                              team.id,
+                              getWagerForTeam(team.id),
+                            )
+                            setFinalResultForTeam(team.id, 'correct')
+                          }}
+                        >
+                          {team.name} Correct (+${getWagerForTeam(team.id)})
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            applyScoreDeltaForTeam(
+                              team.id,
+                              -getWagerForTeam(team.id),
+                            )
+                            setFinalResultForTeam(team.id, 'incorrect')
+                          }}
+                        >
+                          {team.name} Incorrect (-${getWagerForTeam(team.id)})
+                        </Button>
+                      </>
+                    ) : (
+                      <Chip
+                        label={`${team.name}: ${
+                          result === 'correct' ? 'Correct' : 'Incorrect'
+                        }`}
+                        color={result === 'correct' ? 'secondary' : 'default'}
+                        variant="outlined"
+                      />
+                    )}
+                  </Stack>
+                )
+              })}
               <Button variant="contained" onClick={handleMarkAnswered}>
                 Finish Final
               </Button>
@@ -623,6 +671,41 @@ function App() {
         <DialogActions sx={{ justifyContent: 'center' }}>
           <Button variant="contained" onClick={handleOpenFinalJeopardy}>
             Open Final Jeopardy
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={showFinalStandings} maxWidth="sm" fullWidth>
+        <DialogTitle>Final Standings</DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={1}>
+            {finalStandings.map((team, index) => (
+              <Box
+                key={team.id}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '8px 12px',
+                  borderRadius: 2,
+                  backgroundColor:
+                    index === 0
+                      ? 'rgba(255, 179, 0, 0.15)'
+                      : 'transparent',
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                  {index + 1}. {team.name}
+                </Typography>
+                <Typography variant="subtitle1">${team.score}</Typography>
+              </Box>
+            ))}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseFinalStandings}>Close</Button>
+          <Button variant="contained" onClick={handleReset}>
+            New Game
           </Button>
         </DialogActions>
       </Dialog>
