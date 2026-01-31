@@ -474,7 +474,7 @@ function App() {
                           <Typography variant="h6" className="cell-value">
                             {answered
                               ? 'Answered'
-                              : `$${question.value}$${
+                              : `$${question.value}${
                                   showDailyDoubleMarkers && isDailyDoubleCell
                                     ? ' •'
                                     : ''
@@ -502,6 +502,7 @@ function App() {
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               {selectedCategory?.name}
+              {isDailyDouble ? ' • 🎉 Daily Double 🎉' : ''}
             </Typography>
             {selectedQuestion?.value && (
               <Chip
