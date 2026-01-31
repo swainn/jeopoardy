@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   AppBar,
   Alert,
@@ -19,15 +19,19 @@ import {
   Paper,
   Select,
   Stack,
+  Slider,
   TextField,
   ThemeProvider,
   Toolbar,
+  Tooltip,
   Typography,
   createTheme,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
+import VolumeOffIcon from '@mui/icons-material/VolumeOff'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import './App.css'
 
 const buildQuestionId = (categoryIndex, questionIndex) =>
@@ -53,6 +57,16 @@ function App() {
   const [showDailyDoubleIntro, setShowDailyDoubleIntro] = useState(false)
   const [pendingDailyDouble, setPendingDailyDouble] = useState(null)
   const [showDailyDoubleMarkers, setShowDailyDoubleMarkers] = useState(false)
+  const [soundEnabled, setSoundEnabled] = useState(true)
+  const [soundVolume, setSoundVolume] = useState(0.6)
+  const [pendingFinalOpen, setPendingFinalOpen] = useState(false)
+  const audioContextRef = useRef(null)
+  const themeSongRef = useRef(null)
+  const correctSoundRef = useRef(null)
+  const incorrectSoundRef = useRef(null)
+  const dailyDoubleSoundRef = useRef(null)
+  const finalSoundRef = useRef(null)
+  const finalOpenTimeoutRef = useRef(null)
 
   const theme = useMemo(
     () =>
@@ -143,6 +157,104 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [gameData])
 
+  const ensureAudioContext = () => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext ||
+        window.webkitAudioContext)()
+    }
+    if (audioContextRef.current.state === 'suspended') {
+      audioContextRef.current.resume()
+    }
+    return audioContextRef.current
+  }
+
+  const playTone = ({ frequency, duration = 0.15, type = 'sine', gain = 0.12 }) => {
+    if (!soundEnabled) return
+    const ctx = ensureAudioContext()
+    const oscillator = ctx.createOscillator()
+    const gainNode = ctx.createGain()
+    oscillator.type = type
+    oscillator.frequency.value = frequency
+    gainNode.gain.value = gain * soundVolume
+    oscillator.connect(gainNode)
+    gainNode.connect(ctx.destination)
+    oscillator.start()
+    oscillator.stop(ctx.currentTime + duration)
+  }
+
+  const playSequence = (sequence) => {
+    if (!soundEnabled) return
+    const ctx = ensureAudioContext()
+    let currentTime = ctx.currentTime
+    sequence.forEach(({ frequency, duration = 0.15, type = 'sine', gain = 0.12 }) => {
+      const oscillator = ctx.createOscillator()
+      const gainNode = ctx.createGain()
+      oscillator.type = type
+      oscillator.frequency.value = frequency
+      gainNode.gain.value = gain * soundVolume
+      oscillator.connect(gainNode)
+      gainNode.connect(ctx.destination)
+      oscillator.start(currentTime)
+      oscillator.stop(currentTime + duration)
+      currentTime += duration + 0.02
+    })
+  }
+
+  const playSound = (type) => {
+    if (!soundEnabled) return
+    switch (type) {
+      case 'select':
+        playTone({ frequency: 440, duration: 0.08, gain: 0.1 })
+        break
+      case 'reveal':
+        playTone({ frequency: 660, duration: 0.12, gain: 0.12 })
+        break
+      case 'correct':
+        if (!correctSoundRef.current) {
+          correctSoundRef.current = new Audio('/correct.mp3')
+        }
+        correctSoundRef.current.volume = soundEnabled ? soundVolume : 0
+        correctSoundRef.current.currentTime = 0
+        correctSoundRef.current.play().catch(() => {})
+        break
+      case 'incorrect':
+        if (!incorrectSoundRef.current) {
+          incorrectSoundRef.current = new Audio('/incorrect.mp3')
+        }
+        incorrectSoundRef.current.volume = soundEnabled ? soundVolume : 0
+        incorrectSoundRef.current.playbackRate = 2.0
+        incorrectSoundRef.current.currentTime = 0
+        incorrectSoundRef.current.play().catch(() => {})
+        break
+      case 'dailyDouble':
+        if (!dailyDoubleSoundRef.current) {
+          dailyDoubleSoundRef.current = new Audio('/double.mp3')
+        }
+        dailyDoubleSoundRef.current.volume = soundEnabled ? soundVolume : 0
+        dailyDoubleSoundRef.current.currentTime = 0
+        dailyDoubleSoundRef.current.play().catch(() => {})
+        break
+      case 'finalIntro':
+        if (!finalSoundRef.current) {
+          finalSoundRef.current = new Audio('/final.mp3')
+        }
+        finalSoundRef.current.volume = soundEnabled ? soundVolume : 0
+        finalSoundRef.current.currentTime = 0
+        finalSoundRef.current.play().catch(() => {})
+        break
+      case 'gameEnd':
+        playSequence([
+          { frequency: 523, duration: 0.12, gain: 0.12 },
+          { frequency: 659, duration: 0.12, gain: 0.12 },
+          { frequency: 784, duration: 0.16, gain: 0.12 },
+          { frequency: 988, duration: 0.18, gain: 0.12 },
+        ])
+        break
+      default:
+        break
+    }
+  }
+
   const maxQuestions = useMemo(() => {
     if (!gameData?.categories?.length) return 0
     return Math.max(
@@ -167,6 +279,7 @@ function App() {
     Boolean(dailyDoubleMap[buildQuestionId(categoryIndex, questionIndex)])
 
   const handleSelectQuestion = (payload) => {
+    playSound('select')
     if (payload?.isFinal) {
       handleOpenQuestion(payload)
       return
@@ -193,7 +306,7 @@ function App() {
       (key) => key !== 'final',
     ).length
     if (totalQuestions > 0 && answeredCount >= totalQuestions) {
-      setShowFinalIntro(true)
+      setPendingFinalOpen(true)
     }
   }, [
     answeredMap,
@@ -204,9 +317,48 @@ function App() {
     totalQuestions,
   ])
 
+  useEffect(() => {
+    if (showDailyDoubleIntro) playSound('dailyDouble')
+  }, [showDailyDoubleIntro])
+
+  useEffect(() => {
+    if (showFinalIntro) playSound('finalIntro')
+  }, [showFinalIntro])
+
+  useEffect(() => {
+    if (showFinalStandings) playSound('gameEnd')
+  }, [showFinalStandings])
+
+  useEffect(() => {
+    if (showFinalStandings) playSound('finalIntro')
+  }, [showFinalStandings])
+
+  useEffect(() => {
+    if (!pendingFinalOpen) return
+    if (!gameData?.finalJeopardy) return
+    if (finalOpenTimeoutRef.current) {
+      clearTimeout(finalOpenTimeoutRef.current)
+    }
+    finalOpenTimeoutRef.current = setTimeout(() => {
+      setShowFinalIntro(true)
+      finalOpenTimeoutRef.current = null
+      setPendingFinalOpen(false)
+    }, 3000)
+    return () => {
+      if (finalOpenTimeoutRef.current) {
+        clearTimeout(finalOpenTimeoutRef.current)
+        finalOpenTimeoutRef.current = null
+      }
+    }
+  }, [gameData, pendingFinalOpen])
+
   const handleCloseDialog = () => {
     setSelected(null)
     setRevealAnswer(false)
+    if (themeSongRef.current) {
+      themeSongRef.current.pause()
+      themeSongRef.current.currentTime = 0
+    }
   }
 
   const handleCloseFinalStandings = () => {
@@ -240,6 +392,11 @@ function App() {
     setDailyDoubleMap({})
     setShowDailyDoubleIntro(false)
     setPendingDailyDouble(null)
+    setPendingFinalOpen(false)
+    if (finalOpenTimeoutRef.current) {
+      clearTimeout(finalOpenTimeoutRef.current)
+      finalOpenTimeoutRef.current = null
+    }
   }
 
   const handleCreateTeams = () => {
@@ -284,6 +441,31 @@ function App() {
     setPendingDailyDouble(null)
   }
 
+  const handleRevealAnswer = () => {
+    setRevealAnswer(true)
+    if (themeSongRef.current) {
+      themeSongRef.current.pause()
+      themeSongRef.current.currentTime = 0
+    }
+    playSound('reveal')
+  }
+
+  useEffect(() => {
+    if (!selected || revealAnswer) return
+    if (!themeSongRef.current) {
+      themeSongRef.current = new Audio('/Jeopardy-theme-song.mp3')
+      themeSongRef.current.loop = true
+    }
+    themeSongRef.current.volume = soundEnabled ? soundVolume : 0
+    themeSongRef.current.play().catch(() => {})
+    return () => {
+      if (themeSongRef.current) {
+        themeSongRef.current.pause()
+        themeSongRef.current.currentTime = 0
+      }
+    }
+  }, [selected, revealAnswer, soundEnabled, soundVolume])
+
   const handleToggleTheme = () => {
     setColorMode((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
@@ -315,17 +497,20 @@ function App() {
   const handleScoreCorrect = () => {
     if (!selectedQuestion?.value) return
     applyScoreDelta(scoreValue)
+    playSound('correct')
     handleMarkAnswered()
   }
 
   const handleScoreIncorrect = () => {
     if (!selectedQuestion?.value) return
     applyScoreDelta(-scoreValue)
+    playSound('incorrect')
     handleSwitchTeam()
     handleMarkAnswered()
   }
 
   const handleNoCorrectResponse = () => {
+    playSound('incorrect')
     handleMarkAnswered()
   }
 
@@ -389,6 +574,27 @@ function App() {
                       onClick={() => setActiveTeamIndex(index)}
                     />
                   ))}
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Tooltip title={soundEnabled ? 'Mute' : 'Unmute'}>
+                      <IconButton
+                        color="inherit"
+                        onClick={() => setSoundEnabled((prev) => !prev)}
+                      >
+                        {soundEnabled ? <VolumeUpIcon /> : <VolumeOffIcon />}
+                      </IconButton>
+                    </Tooltip>
+                    <Slider
+                      size="small"
+                      min={0}
+                      max={1}
+                      step={0.05}
+                      value={soundVolume}
+                      onChange={(_, value) =>
+                        setSoundVolume(Array.isArray(value) ? value[0] : value)
+                      }
+                      sx={{ width: 90 }}
+                    />
+                  </Stack>
                 </Stack>
               )}
               <IconButton color="inherit" onClick={handleToggleTheme}>
@@ -587,9 +793,7 @@ function App() {
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'flex-start' }}>
           {!revealAnswer ? (
-            <Button onClick={() => setRevealAnswer(true)}>
-              Reveal Answer
-            </Button>
+            <Button onClick={handleRevealAnswer}>Reveal Answer</Button>
           ) : isFinalJeopardy ? (
             <Stack direction="column" spacing={1}>
               {teams.map((team) => {
@@ -606,6 +810,7 @@ function App() {
                               team.id,
                               getWagerForTeam(team.id),
                             )
+                            playSound('correct')
                             setFinalResultForTeam(team.id, 'correct')
                           }}
                         >
@@ -617,6 +822,7 @@ function App() {
                               team.id,
                               -getWagerForTeam(team.id),
                             )
+                            playSound('incorrect')
                             setFinalResultForTeam(team.id, 'incorrect')
                           }}
                         >
