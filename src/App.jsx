@@ -15,7 +15,9 @@ import {
   Divider,
   IconButton,
   Link,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   ThemeProvider,
   Toolbar,
@@ -38,11 +40,10 @@ function App() {
   const [selected, setSelected] = useState(null)
   const [revealAnswer, setRevealAnswer] = useState(false)
   const [answeredMap, setAnsweredMap] = useState({})
-  const [teams, setTeams] = useState([
-    { id: 'team-1', name: 'Team 1', score: 0 },
-    { id: 'team-2', name: 'Team 2', score: 0 },
-  ])
+  const [teams, setTeams] = useState([])
   const [activeTeamIndex, setActiveTeamIndex] = useState(0)
+  const [teamCount, setTeamCount] = useState(2)
+  const [showTeamSetup, setShowTeamSetup] = useState(true)
 
   const theme = useMemo(
     () =>
@@ -129,11 +130,19 @@ function App() {
     setAnsweredMap({})
     setSelected(null)
     setRevealAnswer(false)
-    setTeams([
-      { id: 'team-1', name: 'Team 1', score: 0 },
-      { id: 'team-2', name: 'Team 2', score: 0 },
-    ])
     setActiveTeamIndex(0)
+    setShowTeamSetup(true)
+  }
+
+  const handleCreateTeams = () => {
+    const nextTeams = Array.from({ length: teamCount }, (_, index) => ({
+      id: `team-${index + 1}`,
+      name: `Team ${index + 1}`,
+      score: 0,
+    }))
+    setTeams(nextTeams)
+    setActiveTeamIndex(0)
+    setShowTeamSetup(false)
   }
 
   const handleToggleTheme = () => {
@@ -148,7 +157,7 @@ function App() {
     setTeams((prev) =>
       prev.map((team, index) =>
         index === activeTeamIndex
-          ? { ...team, score: team.score + delta }
+          ? { ...team, score: Math.max(0, team.score + delta) }
           : team,
       ),
     )
@@ -197,17 +206,19 @@ function App() {
               spacing={1}
               sx={{ marginLeft: 'auto', alignItems: 'center' }}
             >
-              <Stack direction="row" spacing={1}>
-                {teams.map((team, index) => (
-                  <Chip
-                    key={team.id}
-                    label={`${team.name}: $${team.score}`}
-                    color={index === activeTeamIndex ? 'secondary' : 'default'}
-                    variant={index === activeTeamIndex ? 'filled' : 'outlined'}
-                    onClick={() => setActiveTeamIndex(index)}
-                  />
-                ))}
-              </Stack>
+              {teams.length > 0 && (
+                <Stack direction="row" spacing={1}>
+                  {teams.map((team, index) => (
+                    <Chip
+                      key={team.id}
+                      label={`${team.name}: $${team.score}`}
+                      color={index === activeTeamIndex ? 'secondary' : 'default'}
+                      variant={index === activeTeamIndex ? 'filled' : 'outlined'}
+                      onClick={() => setActiveTeamIndex(index)}
+                    />
+                  ))}
+                </Stack>
+              )}
               <IconButton color="inherit" onClick={handleToggleTheme}>
                 {colorMode === 'dark' ? (
                   <Brightness7Icon />
@@ -415,6 +426,33 @@ function App() {
               </Button>
             </>
           )}
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={showTeamSetup} maxWidth="xs" fullWidth>
+        <DialogTitle>Set Teams</DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={2}>
+            <Typography variant="body2" color="text.secondary">
+              Choose the number of teams to start the game.
+            </Typography>
+            <Select
+              value={teamCount}
+              onChange={(event) => setTeamCount(Number(event.target.value))}
+              fullWidth
+            >
+              {[2, 3, 4, 5, 6].map((count) => (
+                <MenuItem key={count} value={count}>
+                  {count} Teams
+                </MenuItem>
+              ))}
+            </Select>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleCreateTeams}>
+            Start Game
+          </Button>
         </DialogActions>
       </Dialog>
     </ThemeProvider>
