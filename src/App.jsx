@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Link,
   Paper,
   Stack,
@@ -21,6 +22,7 @@ import {
   Typography,
   createTheme,
 } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import './App.css'
 
 const theme = createTheme({
@@ -312,36 +314,39 @@ function App() {
         </Box>
       </Box>
 
-      <Dialog open={Boolean(selected)} onClose={handleCloseDialog} fullWidth>
+      <Dialog
+        open={Boolean(selected)}
+        onClose={handleCloseDialog}
+        fullWidth
+        maxWidth="md"
+      >
         <DialogTitle>
-          <Stack direction="row" spacing={2} alignItems="center">
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               {selectedCategory?.name}
             </Typography>
             {selectedQuestion?.value && (
-              <Chip label={`$${selectedQuestion.value}`} color="secondary" />
+              <Chip
+                label={`$${selectedQuestion.value}`}
+                color="secondary"
+                sx={{ marginLeft: 2 }}
+              />
             )}
-          </Stack>
+            <Box sx={{ marginLeft: 'auto' }}>
+              <IconButton onClick={handleCloseDialog} aria-label="Close">
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </Box>
         </DialogTitle>
         <DialogContent dividers>
           <Stack spacing={2}>
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={1}
-              alignItems={{ xs: 'flex-start', sm: 'center' }}
-            >
-              <Typography variant="body2" color="text.secondary">
-                Active Team:
-              </Typography>
-              <Chip label={activeTeam?.name} color="secondary" />
-              <Button size="small" onClick={handleSwitchTeam}>
-                Switch Team
-              </Button>
-            </Stack>
-            <Typography variant="body1">{selectedQuestion?.clue}</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              {selectedQuestion?.clue}
+            </Typography>
             <Divider />
             {revealAnswer ? (
-              <Typography variant="h6" color="secondary">
+              <Typography variant="h4" color="secondary" sx={{ fontWeight: 700 }}>
                 {selectedQuestion?.answer}
               </Typography>
             ) : (
@@ -349,7 +354,7 @@ function App() {
                 Answer hidden. Reveal when ready.
               </Typography>
             )}
-            {selectedQuestion?.reference && (
+            {revealAnswer && selectedQuestion?.reference && (
               <Typography variant="caption" color="text.secondary">
                 {selectedQuestion?.href ? (
                   <Link
@@ -369,30 +374,29 @@ function App() {
             )}
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleScoreCorrect}
-            variant="contained"
-            color="secondary"
-            disabled={!canScore}
-          >
-            Correct (+${selectedQuestion?.value || 0})
-          </Button>
-          <Button onClick={handleScoreIncorrect} disabled={!canScore}>
-            Incorrect / No Answer (-${selectedQuestion?.value || 0})
-          </Button>
-          <Button onClick={handleNoCorrectResponse} disabled={!canScore}>
-            No Correct Response
-          </Button>
-          <Button onClick={() => setRevealAnswer((prev) => !prev)}>
-            {revealAnswer ? 'Hide Answer' : 'Reveal Answer'}
-          </Button>
-          <Button variant="contained" onClick={handleMarkAnswered}>
-            Mark Answered
-          </Button>
-          <Button color="inherit" onClick={handleCloseDialog}>
-            Close
-          </Button>
+        <DialogActions sx={{ justifyContent: 'flex-start' }}>
+          {!revealAnswer ? (
+            <Button onClick={() => setRevealAnswer(true)}>
+              Reveal Answer
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={handleScoreCorrect}
+                variant="contained"
+                color="secondary"
+                disabled={!canScore}
+              >
+                Correct (+${selectedQuestion?.value || 0})
+              </Button>
+              <Button onClick={handleScoreIncorrect} disabled={!canScore}>
+                Incorrect (-${selectedQuestion?.value || 0})
+              </Button>
+              <Button onClick={handleNoCorrectResponse} disabled={!canScore}>
+                No Correct Response
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </ThemeProvider>
