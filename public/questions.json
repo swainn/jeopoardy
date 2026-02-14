@@ -1,218 +1,218 @@
 {
-  "title": "Sunday School Jeopardy",
-  "subtitle": "January 26-February 1, 2026: Genesis 5 & Moses 6",
+  "title": "Sunday School - Genesis 6-11; Moses 8",
+  "date": "2026-02-15",
   "categories": [
     {
-      "name": "Enoch's Call",
-      "hint": "Moses 6:26-32",
+      "name": "Noah's Flood",
+      "hint": "Moses 8:15-24, 28; Genesis 6-8",
       "questions": [
         {
           "value": 100,
-          "clue": "This prophet was called by God while journeying among the people.",
-          "answer": "Who is Enoch?",
-          "reference": "Moses 6:26",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p26#p26"
+          "clue": "Noah was commanded to declare this message to the people before the Flood.",
+          "answer": "What is repentance? OR What is the Gospel?",
+          "reference": "Moses 8:19-20",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/8?lang=eng&id=p19-p20#p19"
         },
         {
           "value": 200,
-          "clue": "The Spirit of God did this when Enoch was called.",
-          "answer": "What is descended from heaven and abode upon him?",
-          "reference": "Moses 6:26",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p26#p26"
+          "clue": "The earth was described as being filled with this before the Flood.",
+          "answer": "What is violence?",
+          "reference": "Genesis 6:11-13",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/6?lang=eng&id=p11-p13#p11"
         },
         {
           "value": 300,
-          "clue": "God commanded Enoch to do this to the people.",
-          "answer": "What is prophesy and call them to repent?",
-          "reference": "Moses 6:27",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+          "clue": "Noah found this in the eyes of the Lord.",
+          "answer": "What is grace?",
+          "reference": "Genesis 6:5-8",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/6?lang=eng&id=p5-p8#p5"
         },
         {
           "value": 400,
-          "clue": "Enoch felt inadequate because he said he was this.",
-          "answer": "What is slow of speech?",
-          "reference": "Moses 6:31",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p31#p31"
+          "clue": "God told Noah to build this out of gopher wood.",
+          "answer": "What is the ark?",
+          "reference": "Genesis 6:14",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/6?lang=eng&id=p14#p14"
         },
         {
           "value": 500,
-          "clue": "The Lord promised Enoch this protection as he obeyed.",
-          "answer": "What is that no man shall pierce thee?",
-          "reference": "Moses 6:32",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p32#p32"
+          "clue": "The rain fell for this many days and nights.",
+          "answer": "What is forty days and forty nights?",
+          "reference": "Genesis 7:7-12",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/7?lang=eng&id=p7-p12#p7"
         }
       ]
     },
     {
-      "name": "Abide and Walk",
-      "hint": "Moses 6:34",
+      "name": "After the Flood",
+      "hint": "Genesis 8 & 9",
       "questions": [
         {
           "value": 100,
-          "clue": "The Lord invited Enoch to do this with Him.",
-          "answer": "What is walk with God?",
-          "reference": "Moses 6:34",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+          "clue": "God set this in the cloud as a token of His covenant.",
+          "answer": "What is a rainbow (the bow)?",
+          "reference": "Genesis 9:13",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/9?lang=eng&id=p13#p13"
         },
         {
           "value": 200,
-          "clue": "To abide means to remain faithful and do this.",
-          "answer": "What is stay?",
-          "reference": "Moses 6:34",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+          "clue": "God promised He would never again destroy the earth by this.",
+          "answer": "What is a flood?",
+          "reference": "Genesis 9:11",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/9?lang=eng&id=p11#p11"
         },
         {
           "value": 300,
-          "clue": "Walking with God includes obeying these.",
-          "answer": "What are God’s commandments?",
-          "reference": "Moses 6:34",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+          "clue": "After the Flood, Noah first sent out this black bird to see if the waters had dried up.",
+          "answer": "What is a raven?",
+          "reference": "Genesis 8:1-7",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/8?lang=eng&id=p1-p7#p1"
         },
         {
           "value": 400,
-          "clue": "Walking with God also means remembering and honoring these.",
-          "answer": "What are covenants?",
-          "reference": "Moses 6:34",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+          "clue": "God said the rainbow would remind Him of this kind of covenant.",
+          "answer": "What is an everlasting covenant?",
+          "reference": "Genesis 9:15-17",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/9?lang=eng&id=p15-p17#p15"
         },
         {
           "value": 500,
-          "clue": "This youth theme is based on Moses 6:34.",
-          "answer": "What is Walk With Me?",
-          "reference": "Moses 6:34",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+          "clue": "Noah sent out this bird three times, and on the second time it returned with an olive leaf.",
+          "answer": "What is a dove?",
+          "reference": "Genesis 8:8-12",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/8?lang=eng&id=p8-p12#p8"
         }
       ]
     },
     {
-      "name": "Effects of the Fall",
-      "hint": "Moses 6:26-27, 48, 54-56",
+      "name": "Tower of Babel",
+      "hint": "Genesis 11:1-9",
       "questions": [
         {
           "value": 100,
-          "clue": "Because of sin, people’s hearts became this.",
-          "answer": "What is hard?",
-          "reference": "Moses 6:27",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+          "clue": "Before Babel, the whole earth had only one of these.",
+          "answer": "What is language?",
+          "reference": "Genesis 11:1",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/11?lang=eng&id=p1#p1"
         },
         {
           "value": 200,
-          "clue": "Sin caused people’s ears to become dull at doing this.",
-          "answer": "What is hearing?",
-          "reference": "Moses 6:27",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+          "clue": "The people wanted to build a tower that would reach this.",
+          "answer": "What is heaven?",
+          "reference": "Genesis 11:4",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/11?lang=eng&id=p4#p4"
         },
         {
           "value": 300,
-          "clue": "Because of sin, people could not do this spiritually.",
-          "answer": "What is see?",
-          "reference": "Moses 6:27",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+          "clue": "The Lord did this to the language of those building the tower.",
+          "answer": "What is confound it?",
+          "reference": "Genesis 11:7",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/11?lang=eng&id=p7#p7"
         },
         {
           "value": 400,
-          "clue": "Because of the Fall, death entered the world.",
-          "answer": "What is death?",
-          "reference": "Moses 6:48",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p48#p48"
+          "clue": "The tower was made of these materials.",
+          "answer": "What is brick and slime?",
+          "reference": "Genesis 11:3",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/11?lang=eng&id=p3#p3"
         },
         {
           "value": 500,
-          "clue": "People are punished for their own sins, not for this.",
-          "answer": "What is Adam’s transgression?",
-          "reference": "Moses 6:54",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p54#p54"
+          "clue": "This happened to the people after their language was confounded.",
+          "answer": "What is they were scattered?",
+          "reference": "Genesis 11:7-9",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/11?lang=eng&id=p7-p9#p7"
         }
       ]
     },
     {
-      "name": "Born Again",
-      "hint": "Moses 6:52-60",
+      "name": "Symbolism",
+      "hint": "Genesis 6-8; Scripture Helps",
       "questions": [
         {
           "value": 100,
-          "clue": "These three elements are used to teach spiritual rebirth.",
-          "answer": "What are water, blood, and spirit?",
-          "reference": "Moses 6:59",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p59#p59"
-        },
-        {
-          "value": 200,
-          "clue": "Water represents this ordinance.",
+          "clue": "The Apostle Peter connected the Flood symbolically to this ordinance.",
           "answer": "What is baptism?",
-          "reference": "Moses 6:59",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p59#p59"
+          "reference": "Scripture Helps - What was symbolic about the Flood?",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng"
+        },
+        {
+          "value": 200,
+          "clue": "The coating of pitch on the ark symbolically points to this.",
+          "answer": "What is the Atonement of Jesus Christ?",
+          "reference": "Scripture Helps - What is significant about the coating of pitch on the ark?",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng"
         },
         {
           "value": 300,
-          "clue": "By the Spirit, we are made this before God.",
-          "answer": "What is justified?",
-          "reference": "Moses 6:60",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p60#p60"
+          "clue": "The dove returning with an olive leaf symbolically represents this.",
+          "answer": "What is peace?",
+          "reference": "Genesis 8:11",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/8?lang=eng&id=p11#p11"
         },
         {
           "value": 400,
-          "clue": "By the blood of Christ, we are made this.",
-          "answer": "What is sanctified?",
-          "reference": "Moses 6:60",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p60#p60"
+          "clue": "The Flood represented a new beginning for the earth, like this represents a new life in Christ.",
+          "answer": "What is baptism?",
+          "reference": "Scripture Helps - Flood symbolism",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng"
         },
         {
           "value": 500,
-          "clue": "Being born again allows us to receive eternal life through this person.",
-          "answer": "Who is Jesus Christ?",
-          "reference": "Moses 6:59-60",
-          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p59-p60#p59"
+          "clue": "This symbol or token was given to help us remember God’s covenant after the Flood.",
+          "answer": "What is the rainbow (the bow)?",
+          "reference": "Genesis 9:13",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/9?lang=eng&id=p13#p13"
         }
       ]
     },
     {
-      "name": "Modern Revelation",
-      "hint": "Scripture Helps for Moses 6",
+      "name": "Scripture Helps",
+      "hint": "Scripture Helps - Genesis 6-11; Moses 8; Come, Follow Me (Feb 9-15)",
       "questions": [
         {
           "value": 100,
-          "clue": "Elder Bednar said this word means remaining fixed, stable, and enduring.",
-          "answer": "What is abide?",
-          "reference": "Scripture Helps: Genesis 5; Moses 6",
-          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_kHcgs,p_kqxpL-p_zKick#p_kHcgs"
+          "clue": "God gave Noah this many years to preach repentance before the Flood.",
+          "answer": "What is 120 years?",
+          "reference": "Scripture Helps - Significance of 120 years",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng"
         },
         {
           "value": 200,
-          "clue": "Walking with the Savior includes obeying these.",
-          "answer": "What are God’s commandments?",
-          "reference": "Scripture Helps: Genesis 5; Moses 6",
-          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_kHcgs,p_kqxpL-p_zKick#p_kHcgs"
+          "clue": "This word in Genesis 6:6 can indicate regret, sorrow, compassion, or a decision to change a course of action.",
+          "answer": "What is repent(ed)?",
+          "reference": "Scripture Helps - “It repented the Lord” clarification",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng"
         },
         {
           "value": 300,
-          "clue": "Walking with the Savior also includes remembering these.",
-          "answer": "What are covenants?",
-          "reference": "Scripture Helps: Genesis 5; Moses 6",
-          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_kHcgs,p_kqxpL-p_zKick#p_kHcgs"
+          "clue": "In Hebrew, the word translated as “perfect” can mean this.",
+          "answer": "What is complete, whole, or having integrity?",
+          "reference": "Scripture Helps - Was Noah perfect?",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng"
         },
         {
           "value": 400,
-          "clue": "Elder Christofferson said being justified means being this before the law.",
-          "answer": "What is pardoned or forgiven?",
-          "reference": "Scripture Helps: Genesis 5; Moses 6",
-          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_jgl2K-p_sW2bG,p_ucnZj-p_oD7Db#p_jgl2K"
+          "clue": "The Prophet Joseph Smith taught that Noah is also known by this name in his role as an angel.",
+          "answer": "Who is Gabriel?",
+          "reference": "Scripture Helps - Noah is also known as Gabriel",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng#p_ysy8B"
         },
         {
           "value": 500,
-          "clue": "Elder Christofferson taught there is no other name or way for redemption besides this person.",
-          "answer": "Who is Jesus Christ?",
-          "reference": "Scripture Helps: Genesis 5; Moses 6",
-          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_jgl2K-p_sW2bG,p_ucnZj-p_oD7Db#p_jgl2K"
+          "clue": "Elder Neal A. Maxwell said corruption had reached this kind of point at the time of the Flood.",
+          "answer": "What is an agency-destroying point?",
+          "reference": "Come, Follow Me - Feb 9-15 (Maxwell quote)",
+          "href": "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026/07?lang=eng"
         }
       ]
     }
   ],
   "finalJeopardy": {
-    "category": "All Things Bear Record",
-    "clue": "According to Moses 6, both spiritual and temporal things were created to do this of Jesus Christ.",
-    "answer": "What is bear record of Him?",
-    "reference": "Moses 6:63",
-    "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p63#p63"
+    "category": "Rainbows and Covenants",
+    "clue": "God placed this in the cloud as a token of the everlasting covenant that the waters would not again become a flood to destroy all flesh.",
+    "answer": "What is the bow (rainbow)?",
+    "reference": "Genesis 9:13-16",
+    "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/9?lang=eng&id=p13-p16#p13"
   }
 }

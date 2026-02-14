@@ -1,0 +1,218 @@
+{
+  "title": "Sunday School Jeopardy",
+  "subtitle": "January 26-February 1, 2026: Genesis 5 & Moses 6",
+  "categories": [
+    {
+      "name": "Enoch's Call",
+      "hint": "Moses 6:26-32",
+      "questions": [
+        {
+          "value": 100,
+          "clue": "This prophet was called by God while journeying among the people.",
+          "answer": "Who is Enoch?",
+          "reference": "Moses 6:26",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p26#p26"
+        },
+        {
+          "value": 200,
+          "clue": "The Spirit of God did this when Enoch was called.",
+          "answer": "What is descended from heaven and abode upon him?",
+          "reference": "Moses 6:26",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p26#p26"
+        },
+        {
+          "value": 300,
+          "clue": "God commanded Enoch to do this to the people.",
+          "answer": "What is prophesy and call them to repent?",
+          "reference": "Moses 6:27",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+        },
+        {
+          "value": 400,
+          "clue": "Enoch felt inadequate because he said he was this.",
+          "answer": "What is slow of speech?",
+          "reference": "Moses 6:31",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p31#p31"
+        },
+        {
+          "value": 500,
+          "clue": "The Lord promised Enoch this protection as he obeyed.",
+          "answer": "What is that no man shall pierce thee?",
+          "reference": "Moses 6:32",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p32#p32"
+        }
+      ]
+    },
+    {
+      "name": "Abide and Walk",
+      "hint": "Moses 6:34",
+      "questions": [
+        {
+          "value": 100,
+          "clue": "The Lord invited Enoch to do this with Him.",
+          "answer": "What is walk with God?",
+          "reference": "Moses 6:34",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+        },
+        {
+          "value": 200,
+          "clue": "To abide means to remain faithful and do this.",
+          "answer": "What is stay?",
+          "reference": "Moses 6:34",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+        },
+        {
+          "value": 300,
+          "clue": "Walking with God includes obeying these.",
+          "answer": "What are God’s commandments?",
+          "reference": "Moses 6:34",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+        },
+        {
+          "value": 400,
+          "clue": "Walking with God also means remembering and honoring these.",
+          "answer": "What are covenants?",
+          "reference": "Moses 6:34",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+        },
+        {
+          "value": 500,
+          "clue": "This youth theme is based on Moses 6:34.",
+          "answer": "What is Walk With Me?",
+          "reference": "Moses 6:34",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p34#p34"
+        }
+      ]
+    },
+    {
+      "name": "Effects of the Fall",
+      "hint": "Moses 6:26-27, 48, 54-56",
+      "questions": [
+        {
+          "value": 100,
+          "clue": "Because of sin, people’s hearts became this.",
+          "answer": "What is hard?",
+          "reference": "Moses 6:27",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+        },
+        {
+          "value": 200,
+          "clue": "Sin caused people’s ears to become dull at doing this.",
+          "answer": "What is hearing?",
+          "reference": "Moses 6:27",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+        },
+        {
+          "value": 300,
+          "clue": "Because of sin, people could not do this spiritually.",
+          "answer": "What is see?",
+          "reference": "Moses 6:27",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p27#p27"
+        },
+        {
+          "value": 400,
+          "clue": "Because of the Fall, death entered the world.",
+          "answer": "What is death?",
+          "reference": "Moses 6:48",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p48#p48"
+        },
+        {
+          "value": 500,
+          "clue": "People are punished for their own sins, not for this.",
+          "answer": "What is Adam’s transgression?",
+          "reference": "Moses 6:54",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p54#p54"
+        }
+      ]
+    },
+    {
+      "name": "Born Again",
+      "hint": "Moses 6:52-60",
+      "questions": [
+        {
+          "value": 100,
+          "clue": "These three elements are used to teach spiritual rebirth.",
+          "answer": "What are water, blood, and spirit?",
+          "reference": "Moses 6:59",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p59#p59"
+        },
+        {
+          "value": 200,
+          "clue": "Water represents this ordinance.",
+          "answer": "What is baptism?",
+          "reference": "Moses 6:59",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p59#p59"
+        },
+        {
+          "value": 300,
+          "clue": "By the Spirit, we are made this before God.",
+          "answer": "What is justified?",
+          "reference": "Moses 6:60",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p60#p60"
+        },
+        {
+          "value": 400,
+          "clue": "By the blood of Christ, we are made this.",
+          "answer": "What is sanctified?",
+          "reference": "Moses 6:60",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p60#p60"
+        },
+        {
+          "value": 500,
+          "clue": "Being born again allows us to receive eternal life through this person.",
+          "answer": "Who is Jesus Christ?",
+          "reference": "Moses 6:59-60",
+          "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p59-p60#p59"
+        }
+      ]
+    },
+    {
+      "name": "Modern Revelation",
+      "hint": "Scripture Helps for Moses 6",
+      "questions": [
+        {
+          "value": 100,
+          "clue": "Elder Bednar said this word means remaining fixed, stable, and enduring.",
+          "answer": "What is abide?",
+          "reference": "Scripture Helps: Genesis 5; Moses 6",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_kHcgs,p_kqxpL-p_zKick#p_kHcgs"
+        },
+        {
+          "value": 200,
+          "clue": "Walking with the Savior includes obeying these.",
+          "answer": "What are God’s commandments?",
+          "reference": "Scripture Helps: Genesis 5; Moses 6",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_kHcgs,p_kqxpL-p_zKick#p_kHcgs"
+        },
+        {
+          "value": 300,
+          "clue": "Walking with the Savior also includes remembering these.",
+          "answer": "What are covenants?",
+          "reference": "Scripture Helps: Genesis 5; Moses 6",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_kHcgs,p_kqxpL-p_zKick#p_kHcgs"
+        },
+        {
+          "value": 400,
+          "clue": "Elder Christofferson said being justified means being this before the law.",
+          "answer": "What is pardoned or forgiven?",
+          "reference": "Scripture Helps: Genesis 5; Moses 6",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_jgl2K-p_sW2bG,p_ucnZj-p_oD7Db#p_jgl2K"
+        },
+        {
+          "value": 500,
+          "clue": "Elder Christofferson taught there is no other name or way for redemption besides this person.",
+          "answer": "Who is Jesus Christ?",
+          "reference": "Scripture Helps: Genesis 5; Moses 6",
+          "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/04-genesis-5-moses-6?lang=eng&id=p_jgl2K-p_sW2bG,p_ucnZj-p_oD7Db#p_jgl2K"
+        }
+      ]
+    }
+  ],
+  "finalJeopardy": {
+    "category": "All Things Bear Record",
+    "clue": "According to Moses 6, both spiritual and temporal things were created to do this of Jesus Christ.",
+    "answer": "What is bear record of Him?",
+    "reference": "Moses 6:63",
+    "href": "https://www.churchofjesuschrist.org/study/scriptures/pgp/moses/6?lang=eng&id=p63#p63"
+  }
+}
