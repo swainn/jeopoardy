@@ -3,18 +3,14 @@
   display: flex;
   flex-direction: column;
   background-color: #0b1220;
-  background-image: linear-gradient(
-      rgba(8, 15, 28, 0.78),
-      rgba(8, 15, 28, 0.78)
-    ),
-    url('/noah_animals.webp');
+  background-image: url('/noah_animals.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   --board-bg: rgba(17, 26, 43, 0.5);
   --category-bg: linear-gradient(135deg, #0c3c78, #0b2e57);
   --category-text: #ffffff;
-  --cell-bg: #0f2340;
+  --cell-bg: #0f234130;
   --cell-hover: #13305a;
   --cell-text: #ffdd57;
   --cell-answered-bg: #1c1c1c;
