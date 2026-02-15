@@ -2,7 +2,16 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  --board-bg: rgba(17, 26, 43, 0.95);
+  background-color: #0b1220;
+  background-image: linear-gradient(
+      rgba(8, 15, 28, 0.78),
+      rgba(8, 15, 28, 0.78)
+    ),
+    url('/noah_animals.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  --board-bg: rgba(17, 26, 43, 0.5);
   --category-bg: linear-gradient(135deg, #0c3c78, #0b2e57);
   --category-text: #ffffff;
   --cell-bg: #0f2340;
@@ -14,7 +23,7 @@
 }
 
 .app-shell[data-theme='light'] {
-  --board-bg: #f5f7fb;
+  --board-bg: rgba(245, 247, 251, 0.5);
   --category-bg: linear-gradient(135deg, #1976d2, #115293);
   --category-text: #ffffff;
   --cell-bg: #e3ecff;
@@ -40,6 +49,11 @@
 .board {
   padding: 16px;
   background: var(--board-bg);
+  backdrop-filter: blur(2px);
+}
+
+.board.MuiPaper-root {
+  background-color: var(--board-bg);
 }
 
 .board-grid {
