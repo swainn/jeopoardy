@@ -152,14 +152,14 @@
         },
         {
           "value": 400,
-          "clue": "The Flood represented a new beginning for the earth, like this represents a new life in Christ.",
-          "answer": "What is baptism?",
-          "reference": "Scripture Helps - Flood symbolism",
+          "clue": "The tower of Babel may have been a counterfeit one of these.",
+          "answer": "What is a temple?",
+          "reference": "Scripture Helps - What was wrong about building the Tower of Babel?",
           "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/06-moses-6-11-moses-8?lang=eng"
         },
         {
           "value": 500,
-          "clue": "This symbol or token was given to help us remember God’s covenant after the Flood.",
+          "clue": "This symbol or token was given to help us remember God's covenant after the Flood.",
           "answer": "What is the rainbow (the bow)?",
           "reference": "Genesis 9:13",
           "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/9?lang=eng&id=p13#p13"
@@ -209,10 +209,10 @@
     }
   ],
   "finalJeopardy": {
-    "category": "Rainbows and Covenants",
-    "clue": "God placed this in the cloud as a token of the everlasting covenant that the waters would not again become a flood to destroy all flesh.",
-    "answer": "What is the bow (rainbow)?",
-    "reference": "Genesis 9:13-16",
-    "href": "https://www.churchofjesuschrist.org/study/scriptures/ot/gen/9?lang=eng&id=p13-p16#p13"
+    "category": "Scripture Helps",
+    "clue": "Scripture Helps teaches that those who perished in the Flood would later be taught the gospel in this place, showing the Flood was not only judgment but also mercy.",
+    "answer": "What is the spirit world?",
+    "reference": "Scripture Helps - Reasons God sent the Flood (see also Moses 7)",
+    "href": "https://www.churchofjesuschrist.org/study/manual/scripture-helps-old-testament/genesis-6-11-moses-8?lang=eng"
   }
 }
